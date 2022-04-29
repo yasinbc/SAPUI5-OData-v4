@@ -1,30 +1,8 @@
-specVersion: '1.0'
+specVersion: '2.3'
 metadata:
-  name: zybc_odata_v4
+  name: "sap.ui.core.tutorial.odatav4.02"
 type: application
 resources:
   configuration:
-    propertiesFileSourceEncoding: UTF-8
-builder:
-  customTasks:
-    - name: webide-extension-task-updateManifestJson
-      beforeTask: generateManifestBundle
-      configuration:
-        appFolder: webapp
-        destDir: dist
-    - name: webide-extension-task-updateNeoApp
-      afterTask: generateVersionInfo
-      configuration:
-        destDir: dist
-        appFolder: webapp
-        nameSpace: demo
-    - name: webide-extension-task-lint
-      afterTask: webide-extension-task-updateNeoApp
-      configuration:
-        destDir: dist
-        appFolder: webapp
-        nameSpace: demo 
-    - name: webide-extension-task-resources
-      afterTask: webide-extension-task-lint
-      configuration:
-        nameSpace: demo
+    paths:
+      webapp: .
