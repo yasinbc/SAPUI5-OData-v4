@@ -16,12 +16,29 @@ sap.ui.define([
 		 *  Hook for initializing the controller
 		 */
 		onInit : function () {
-			var oJSONData = {
-				busy : false,
-				order:0
-			};
-			var oModel = new JSONModel(oJSONData);
-			this.getView().setModel(oModel, "appView");
+			var oMessageManager = sap.ui.getCore().getMessageManager(),
+					oMessageModel = oMessageManager.getMessageModel(),
+					oMessageModelBinding = oMessageModel.bindList("/", undefined, [],
+								new Filter("technical", FilterOperator.EQ, true)),
+					oViewModel = new JSONModel({
+						busy : false,
+						hasUIChanges : false,
+						usernameEmpty : true,
+						order : 0
+					});
+			
+			this.getView().setModel(oViewModel, "appView");
+			this.getView().setModel(oMessageModel, "message");
+			
+			oMessageModelBinding.attachChange(this.onMessageBindingChange, this);
+			this._bTechnicalErrors = false;
+			
+			// var oJSONData = {
+			// 	busy : false,
+			// 	order:0
+			// };
+			// var oModel = new JSONModel(oJSONData);
+			// this.getView().setModel(oModel, "appView");
 		},
 
 
@@ -83,6 +100,15 @@ sap.ui.define([
 		 */
 		_getText : function (sTextId, aArgs) {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(sTextId, aArgs);
+		},
+		
+		_setUIChanges : function(bHasUIChanges){
+			if (this._bTechnicalErrors) {
+				// If there is currently a technical error, then force 'true'.
+				bHasUIChanges = true;
+			} else if (bHasUIChanges === undefined) {
+				bHasUIChanges = this.this.getView().getModel().hasPendingChanges();          
+			}
 		}
 	});
 });
