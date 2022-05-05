@@ -72,6 +72,7 @@
 					"autoExpandSelect": true,
 					"earlyRequests": true,
 					"operationMode": "Server",
+					"groupId": "$auto",
 					"synchronizationMode": "None"
 				}
 			}
